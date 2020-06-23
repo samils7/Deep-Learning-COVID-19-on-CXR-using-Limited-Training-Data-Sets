@@ -1,14 +1,14 @@
 # Test name
-test_name = 'name'
-sampling_option = 'oversampling'
+test_name = 'samil1'
+sampling_option = 'None' #'oversampling'
 
 # Batch size
-train_batch_size = 16
-val_batch_size = 16
+train_batch_size = 16 #16
+val_batch_size = 16 #16
 test_batch_size = 1
 
 # Num_classes
-num_classes = 4
+num_classes = 2
 
 # Model
 model = 'resnet'

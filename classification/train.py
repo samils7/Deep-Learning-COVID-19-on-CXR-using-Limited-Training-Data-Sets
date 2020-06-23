@@ -20,7 +20,8 @@ from utils.customloader import COVID_Dataset
 from torch.utils.tensorboard import SummaryWriter
 
 ## Detect if we have a GPU available
-device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print("device: ", device)
 
 # Save data
 save_dir = header.save_dir
@@ -51,8 +52,8 @@ def main():
     print("Initializing Datasets and Dataloaders...")
 
     # Create training and validation datasets
-    train_dataset = COVID_Dataset((header.img_size, header.img_size), n_channels=3, n_classes=4, mode='train')
-    val_dataset = COVID_Dataset((header.img_size, header.img_size), n_channels=3, n_classes=4, mode='val')
+    train_dataset = COVID_Dataset((header.img_size, header.img_size), n_channels=3, n_classes=2, mode='train')  # n_classes = 4
+    val_dataset = COVID_Dataset((header.img_size, header.img_size), n_channels=3, n_classes=2, mode='val')  # n_classes = 4
 
     image_datasets = {'train': train_dataset, 'val': val_dataset}
 
@@ -76,7 +77,7 @@ def main():
 
     # Create training and validation dataloaders
     dataloaders_dict = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=batch_size[x], sampler=sampler[x], num_workers=4,
-                                       pin_memory=True) for x in ['train', 'val']}
+                                       pin_memory=True, shuffle=True) for x in ['train', 'val']}
 
     # Send the model to GPU
     model_ft = model_ft.to(device)
@@ -251,16 +252,14 @@ def train_model(model, dataloaders, criterion, optimizer, num_epochs=header.epoc
             epoch_f1 = f1_score(y_true, y_pred, average='macro')
 
             if phase == 'val':
-                report_dict = classification_report(y_true, y_pred, output_dict=True, target_names=['normal', 'bacteria', 'TB', 'viral_and_COVID'])
+                report_dict = classification_report(y_true, y_pred, output_dict=True, target_names=['normal', 'COVID'])
 
                 normal_f1 = report_dict['normal']['f1-score']
-                bacteria_f1 = report_dict['bacteria']['f1-score']
-                TB_f1 = report_dict['TB']['f1-score']
-                COVID_f1 = report_dict['viral_and_COVID']['f1-score']
-                epoch_avg = (normal_f1 + bacteria_f1 + TB_f1 + COVID_f1)/4
+                COVID_f1 = report_dict['COVID']['f1-score']
+                epoch_avg = (normal_f1 + COVID_f1)/2
 
                 print('{} Loss: {:.4f} Acc: {:.4f} F1: {:.4f} avg: {:.4f}'.format(phase, epoch_loss, epoch_acc, epoch_f1, epoch_avg))
-                print(classification_report(y_true, y_pred, target_names=['normal', 'bacteria', 'TB', 'viral_and_COVID']))
+                print(classification_report(y_true, y_pred, target_names=['normal', 'COVID']))
 
             else:
                 print('{} Loss: {:.4f} Acc: {:.4f} F1: {:.4f}'.format(phase, epoch_loss, epoch_acc, epoch_f1))

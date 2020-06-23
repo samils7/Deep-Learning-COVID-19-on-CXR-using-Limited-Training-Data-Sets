@@ -14,7 +14,7 @@ import utils.utils as utils
 class COVID_Dataset(data.Dataset):
     'Characterizes a dataset for PyTorch'
 
-    def __init__(self, dim=(224, 224), n_channels=3, n_classes=4, mode='train'):
+    def __init__(self, dim=(224, 224), n_channels=3, n_classes=2, mode='train'):
         'Initialization'
         self.dim = dim
         self.n_channels = n_channels
@@ -33,7 +33,11 @@ class COVID_Dataset(data.Dataset):
         for label in self.labels:
 
             npy_dir = self.data_dir + label
-
+            if label == 'normal':
+                y_label = 0
+            elif label == 'COVID':
+                y_label = 1
+            '''
             if label == 'normal':
                 y_label = 0
             elif label == 'bacteria':
@@ -44,7 +48,7 @@ class COVID_Dataset(data.Dataset):
                 y_label = 3
             elif label == 'COVID':
                 y_label = 3
-
+            '''
             images_list = glob.glob(npy_dir + '/*.image.npy')
             for image in images_list:
                 self.total_images_dic[image] = y_label

@@ -15,7 +15,7 @@ import random
 
 
 # Define classes
-classes = ('normal', 'bacteria', 'TB', 'viral_and_COVID')
+classes = ('normal', 'COVID')
 
 # Define data_transforms
 data_transforms = transforms.Compose([
@@ -206,7 +206,7 @@ def plot_classes_preds_single(net, images, labels):
     preds, probs = images_to_probs_single(net, images)
     # plot the images in the batch, along with predicted and true labels
     fig = plt.figure(figsize=(12, 48))
-    for idx in np.arange(4):
+    for idx in np.arange(4):  # for idx in np.arange(2):
         ax = fig.add_subplot(1, 4, idx+1, xticks=[], yticks=[])
         matplotlib_imshow(images[idx], one_channel=True)
         ax.set_title("{0}, {1:.1f}%\n(label: {2})".format(
