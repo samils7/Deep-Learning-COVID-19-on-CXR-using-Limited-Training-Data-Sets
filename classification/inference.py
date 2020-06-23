@@ -21,7 +21,7 @@ from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 
 ## Detect if we have a GPU available
-device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Load data
 data_dir = header.data_dir
@@ -48,7 +48,7 @@ def main():
     print("Initializing Datasets and Dataloaders...")
 
     # Create training and test datasets
-    test_dataset  = COVID_Dataset((header.img_size, header.img_size), n_channels=3, n_classes=4, mode='test')
+    test_dataset  = COVID_Dataset((header.img_size, header.img_size), n_channels=3, n_classes=2, mode='test')
 
     image_datasets = {'test': test_dataset}
 
@@ -56,7 +56,7 @@ def main():
 
     # Create training and validation dataloaders
     dataloaders_dict = {
-        x: torch.utils.data.DataLoader(image_datasets[x], batch_size=batch_size[x], num_workers=4, pin_memory=True) for x in ['test']}
+        x: torch.utils.data.DataLoader(image_datasets[x], batch_size=batch_size[x], num_workers=4, pin_memory=True, shuffle=True) for x in ['test']}
 
     # Send the model to GPU
     model_ft = model_ft.to(device)
@@ -149,12 +149,12 @@ def main():
     cm = confusion_matrix(y_true, y_pred)
     plt.figure(figsize=(8, 8))
     plt.grid(b=False)
-    plot_confusion_matrix(cm, classes=['Normal', 'Bacteria', 'TB', 'Virus_or_COVID-19'], normalize=False,
+    plot_confusion_matrix(cm, classes=['Normal', 'COVID-19'], normalize=False,
                           title='Confusion matrix', cmap=plt.cm.Blues)
     plt.show()
 
     # Overall classification report
-    print(classification_report(y_true, y_pred, target_names=['Normal', 'Bacteria', 'TB', 'Virus_or_COVID-19']))
+    print(classification_report(y_true, y_pred, target_names=['Normal', 'COVID-19']))
     ACC = accuracy_score(y_true, y_pred)
     PREC = precision_score(y_true, y_pred, average='macro')
     REC = recall_score(y_true, y_pred, average='macro')

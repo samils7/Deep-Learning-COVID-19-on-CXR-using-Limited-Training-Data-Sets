@@ -10,13 +10,13 @@ import matplotlib.pyplot as plt
 import time
 import os
 import copy
-from classification import header
+import header
 from sklearn.metrics import f1_score
 from sklearn.metrics import classification_report
-from utils.utils import initialize_model
-from utils.utils import make_weights_for_balanced_classes_customloader
-from utils.utils import plot_classes_preds_single
-from utils.customloader import COVID_Dataset
+from utils import initialize_model
+from utils import make_weights_for_balanced_classes_customloader
+from utils import plot_classes_preds_single
+from customloader import COVID_Dataset
 from torch.utils.tensorboard import SummaryWriter
 
 ## Detect if we have a GPU available
