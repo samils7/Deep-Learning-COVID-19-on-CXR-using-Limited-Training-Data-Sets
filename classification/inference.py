@@ -8,13 +8,13 @@ from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 import time
 import os
-from classification import header
+import header
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
-from utils.utils import initialize_model
-from utils.utils import plot_confusion_matrix
-from utils.utils import most_common_top_1
-from utils.customloader import COVID_Dataset
+from utils import initialize_model
+from utils import plot_confusion_matrix
+from utils import most_common_top_1
+from customloader import COVID_Dataset
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score
 from sklearn.metrics import precision_score
@@ -56,7 +56,7 @@ def main():
 
     # Create training and validation dataloaders
     dataloaders_dict = {
-        x: torch.utils.data.DataLoader(image_datasets[x], batch_size=batch_size[x], num_workers=4, pin_memory=True, shuffle=True) for x in ['test']}
+        x: torch.utils.data.DataLoader(image_datasets[x], batch_size=batch_size[x], num_workers=4, pin_memory=True) for x in ['test']}
 
     # Send the model to GPU
     model_ft = model_ft.to(device)
@@ -77,7 +77,7 @@ def main():
     for phase in ['test']:
 
         y_pred_total = []
-        for x in range(99):
+        for x in range(len(dataloaders_dict[phase])):
             y_pred_total.append([])
 
         for i in range(repeat):
@@ -139,7 +139,7 @@ def main():
 
     y_pred = []
 
-    for x in range(99):
+    for x in range(len(dataloaders_dict[phase])):
         final_predict = most_common_top_1(y_pred_total[x])
         y_pred.append(final_predict)
 

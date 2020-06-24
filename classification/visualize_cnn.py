@@ -7,13 +7,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 from PIL import Image
-from classification import header
-from utils.utils import data_transforms
-from utils.utils import initialize_model
+import header
+from utils import data_transforms
+from utils import initialize_model
 from gradcam import GradCAM
 from gradcam.utils import visualize_cam
 import random
-from utils.utils import augmentation
+from utils import augmentation
 import cv2
 import glob
 
@@ -42,8 +42,8 @@ def main():
 
     # Temporary header
     # directory - normal, bacteria, TB, COVID-19, virus
-    dir_test = '../data/test/COVID/'
-    label = 3 # set 3 for COVID-19 for virus class
+    dir_test = './data/test/COVID/'
+    label = 1 # set 3 for COVID-19 for virus class
 
     # Data loader
     test_imgs = sorted(glob.glob(dir_test + '*.image.npy'))

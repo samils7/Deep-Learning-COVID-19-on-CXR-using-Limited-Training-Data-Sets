@@ -151,6 +151,7 @@ def plot_confusion_matrix(cm, classes,
 
 
 def augmentation(image, rand_p, mode):
+    '''
     if mode == 'train':
         # random vertical flip
         if rand_p > 0.5:
@@ -167,7 +168,7 @@ def augmentation(image, rand_p, mode):
         pass
     else:
         print('Error: not a valid phase option.')
-
+    '''
     return image
 
 

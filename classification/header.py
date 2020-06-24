@@ -1,5 +1,5 @@
 # Test name
-test_name = 'samil1'
+test_name = 'samil2'
 sampling_option = 'None' #'oversampling'
 
 # Batch size
@@ -26,7 +26,7 @@ data_dir = './data/'
 save_dir = '../checkpoint' + '/' + test_name
 
 # Test epoch: what epoch to load
-inference_epoch = 2
+inference_epoch = 100
 
 # Resume training
 continue_epoch = 0

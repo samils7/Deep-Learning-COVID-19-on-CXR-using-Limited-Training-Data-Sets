@@ -23,7 +23,7 @@ class COVID_Dataset(data.Dataset):
         if self.mode == 'train' or self.mode == 'val':
             self.data_dir = header.data_dir + self.mode + '/'
         elif self.mode == 'test':
-            self.data_dir = '.' + header.data_dir + self.mode + '/'
+            self.data_dir = header.data_dir + self.mode + '/'
 
         self.labels = os.listdir(self.data_dir) # COVID, Bacteria, Virus, TB, Normal
 
